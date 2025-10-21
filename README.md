@@ -15,26 +15,50 @@ Flask application with comprehensive monitoring using Prometheus, Loki, and Graf
 
 ## Architecture
 
+### Monitoring Stack Flow
+
 ```text
-┌─────────────────┐
-│  Feedback API   │  Port 8090
-│   (Flask App)   │
-└────────┬────────┘
-         │
-    ┌────┴────┐
-    │         │
-    ▼         ▼
-┌─────────┐ ┌─────────┐
-│Prometheus││  Loki   │
-│  :9090  │ │  :3100  │
-└────┬────┘ └────┬────┘
-     │           │
-     └─────┬─────┘
-           ▼
-      ┌─────────┐
-      │ Grafana │  Port 3000
-      │Dashboards│
-      └─────────┘
+┌─────────────────────────────────────────┐
+│ feedback-app container     Port 8090    │
+│                                         │
+│ ┌─────────────────────────────────────┐ │
+│ │ Flask App                           │ │
+│ │  - prometheus_client creates metrics│ │──┐
+│ │  - Exposes /metrics endpoint        │ │  │ HTTP GET /metrics
+│ │  - Writes JSON logs to stdout/file  │ │  │ every 15s
+│ └─────────────────────────────────────┘ │  │
+│              │ logs                     │  │
+│              ▼                          │  │
+│         stdout + /app/logs              │  │
+└─────────────────┬───────────────────────┘  │
+                  │                          │
+                  │                          ▼
+           ┌──────┴────────┐      ┌──────────────────┐
+           │   Promtail    │      │   Prometheus     │
+           │               │      │    Port 9090     │
+           │  - Reads logs │      │  - Scrapes data  │
+           │  - Parses JSON│      │  - Stores metrics│
+           │   Port 9080   │      │  - 7d retention  │
+           └───────┬───────┘      └────────┬─────────┘
+                   │ Push logs             │ Queries
+                   ▼                       │
+           ┌──────────────┐                │
+           │    Loki      │                │
+           │  Port 3100   │                │
+           │ - Stores logs│                │
+           │ - 168h retain│                │
+           └──────┬───────┘                │
+                  │ Queries                │
+                  │                        │
+                  ▼                        ▼
+           ┌─────────────────────────────────┐
+           │         Grafana                 │
+           │         Port 3000               │
+           │  - Visualizes metrics (from     │
+           │    Prometheus)                  │
+           │  - Visualizes logs (from Loki)  │
+           │  - Creates dashboards           │
+           └─────────────────────────────────┘
 ```
 
 ## Quick Start
