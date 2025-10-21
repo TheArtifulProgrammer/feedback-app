@@ -25,7 +25,7 @@ Flask application with comprehensive monitoring using Prometheus, Loki, and Graf
     │         │
     ▼         ▼
 ┌─────────┐ ┌─────────┐
-│Prometheus│ │  Loki   │
+│Prometheus││  Loki   │
 │  :9090  │ │  :3100  │
 └────┬────┘ └────┬────┘
      │           │

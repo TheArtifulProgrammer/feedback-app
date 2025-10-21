@@ -1,4 +1,4 @@
-FROM python:3.12-slim as base
+FROM python:3.12-slim AS base
 
 WORKDIR /app
 
@@ -10,12 +10,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-FROM base as dependencies
+FROM base AS dependencies
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-FROM base as production
+FROM base AS production
 
 COPY --from=dependencies /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=dependencies /usr/local/bin /usr/local/bin
