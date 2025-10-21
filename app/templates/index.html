@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback App - DevOps Monitoring</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">📝 Feedback App</h1>
+            <div class="header-info">
+                <div id="health-status" class="health-badge">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Checking...</span>
+                </div>
+                <div class="stats">
+                    <span id="feedback-count">0</span> Feedback
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <button id="add-feedback-btn" class="btn btn-primary">
+                    + Add Feedback
+                </button>
+                <button id="refresh-btn" class="btn btn-secondary">
+                    🔄 Refresh
+                </button>
+            </div>
+
+            <!-- Feedback List -->
+            <div id="feedback-list" class="feedback-list">
+                <!-- Feedback cards will be dynamically inserted here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <div class="empty-icon">💬</div>
+                <h3>No feedback yet</h3>
+                <p>Be the first to share your thoughts!</p>
+                <button class="btn btn-primary" onclick="openAddModal()">Add First Feedback</button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading feedback...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Feedback Modal -->
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Feedback</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="feedback-form">
+                    <input type="hidden" id="feedback-id">
+                    <div class="form-group">
+                        <label for="feedback-message">Your Feedback</label>
+                        <textarea
+                            id="feedback-message"
+                            placeholder="Share your thoughts..."
+                            rows="5"
+                            maxlength="500"
+                            required
+                        ></textarea>
+                        <div class="char-count">
+                            <span id="char-count">0</span> / 500 characters
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Feedback</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirm Delete</h2>
+                <button class="close-btn" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this feedback?</p>
+                <p class="text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Feedback App | DevOps Monitoring Stack</p>
+            <div class="footer-links">
+                <a href="/health" target="_blank">Health Check</a>
+                <a href="/metrics" target="_blank">Metrics</a>
+                <a href="http://localhost:3000" target="_blank">Grafana</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

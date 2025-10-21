@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Data and logs
+data/
+logs/
+*.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.pdf
+
+# Monitoring configs (not needed in app container)
+monitoring/
+
+# Docker
+docker-compose.yml
+Dockerfile
+.dockerignore

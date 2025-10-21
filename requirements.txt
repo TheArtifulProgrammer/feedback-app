@@ -1,0 +1,18 @@
+# Flask Framework
+Flask==3.0.3
+Werkzeug==3.0.3
+
+# Environment variable management
+python-dotenv==1.0.1
+
+# Prometheus Client
+prometheus-client==0.20.0
+
+# Structured logging
+python-json-logger==2.0.7
+
+# Production WSGI server
+gunicorn==22.0.0
+
+# CORS support
+Flask-Cors==4.0.1
